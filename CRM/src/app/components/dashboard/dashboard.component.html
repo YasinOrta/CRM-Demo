@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="d-flex">
+        <div class="left">
+            <ngx-charts-pie-chart [results]="salesChartData" [view]="view"
+                [gradient]="false" [animations]="true" [doughnut]="false" [legend]="true"
+                [labels]="true" [scheme]="'vivid'" (select)="pieChartSelection($event)"></ngx-charts-pie-chart>
+        </div>
+        <div class="right">
+            <ngx-charts-bar-horizontal [results]="taskChartData"
+                [view]="view" [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
+                [showYAxisLabel]="true" [xAxisLabel]="'Completion Rates'"
+                [yAxisLabel]="'Tasks'" (select)="horizontalBarSelection($event)"
+                [roundDomains]="true" [showDataLabel]="true"></ngx-charts-bar-horizontal>
+        </div>
+        
+        <dx-popup 
+        [showTitle]="true" title="hello" 
+        [hideOnOutsideClick]="true" 
+        [(visible)]="isPopupPieVisible"
+        [height]="500"
+        [width]="500"
+        [resizeEnabled]="true"
+        position="center"
+        [dragEnabled]="true"
+        >
+        <dx-text-box label="Company" [disabled]="true" value={{popupValPie[0]}} labelMode="floating" [width]="200" [height]="50"></dx-text-box>
+        <dx-text-box label="Estimated Value$" [disabled]="true" value={{popupValPie[1]}} labelMode="floating" [width]="200" [height]="50"></dx-text-box>
+        <h2>Company: {{popupValPie[0]}}</h2>
+        <h2>Estimated Value: ${{popupValPie[1]}}</h2>
+
+    </dx-popup>
+
+    <dx-popup 
+        [showTitle]="true" title="hello" 
+        [hideOnOutsideClick]="true" 
+        [(visible)]="isPopupBarVisible"
+        [height]="500"
+        [width]="500"
+        [resizeEnabled]="true"
+        position="center"
+        [dragEnabled]="true"
+        >
+        <dx-text-box label="Task Name" [disabled]="true" value={{popupValBar[0]}} labelMode="floating" [width]="200" [height]="50"></dx-text-box>
+        <dx-text-box label="Completion Rate%" [disabled]="true" value={{popupValBar[1]}} labelMode="floating" [width]="200" [height]="50"></dx-text-box>
+        <h2>Task Name: {{popupValBar[0]}}</h2>
+        <h2>Completion Rate: %{{popupValBar[1]}}</h2>
+
+    </dx-popup>
+    </div>
+
+    <div class="below">
+        <h2>...Logs of events...</h2>
+    </div>
+
+</div>

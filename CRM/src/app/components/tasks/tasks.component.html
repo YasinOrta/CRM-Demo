@@ -1,0 +1,124 @@
+<h3>DataGrid-Tasks</h3>
+
+<dx-button (onClick)="kanbanToggle()">Kanban</dx-button>
+<dx-button (onClick)="dataGridToggle()">Data Grid</dx-button>
+
+@switch (currentView) {
+    @case ("dataGrid") {
+        <div>
+            <dx-data-grid 
+            id="dataGrid" 
+            [dataSource]="sampleData" 
+            keyExpr="id" 
+            [allowColumnReordering]="true"
+            (onSelectionChanged)="selectTask($event)"
+            [rowAlternationEnabled]="true"
+            [allowColumnResizing]="true"
+            >
+        
+                <dxi-column dataField="description" caption="Task Description"></dxi-column>    
+                <dxi-column dataField="status"></dxi-column>
+                <dxi-column dataField="priority"></dxi-column>
+                <dxi-column dataField="startDate" dataType="date"></dxi-column>
+                <dxi-column dataField="dueDate" dataType="date"></dxi-column>
+                <dxi-column dataField="completionRate"></dxi-column>
+                <dxi-column dataField="owner"></dxi-column>
+                <dxi-column dataField="assignedTo"></dxi-column>   
+                <dxi-column dataField="follower"></dxi-column>
+        
+                <dxo-filter-row [visible]="true"></dxo-filter-row>
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+        
+                <dxo-editing 
+                mode="popup" 
+                [allowUpdating]="true" 
+                [allowDeleting]="true" 
+                [allowAdding]="true" 
+                [useIcons]="true">
+                </dxo-editing>
+        
+            </dx-data-grid>
+        
+            <p id="selected-ROW" *ngIf="selectedRow">
+                Selected Row: {{ selectedRow | json}}
+            </p>
+        </div>
+    }
+    @case ("kanban") {
+      <dx-button class="editBtn" (onClick)="editFinishedTasks()" icon="comment" [visible]="isBtn1Visible">Edit Finished
+        Tasks</dx-button>
+      <dx-button class="editBtn" (onClick)="lockFinishedTasks()" [visible]="!isBtn1Visible">Lock Finished Tasks</dx-button>
+
+        <div class="kanban-board">
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event,'To Do')">
+              <h2 id="title">To Do</h2>
+              <div class="kanban-card" draggable="true" *ngFor="let item of filterTasks('To Do')" (dragstart)="onDragStart(item)">
+                <p>Id: {{item.taskId}}</p>
+                <p>Description: {{item.taskName}}</p>
+                <p>Completion Rate: {{item.completionRate}}</p>
+                <p>Status: {{item.status}}</p>
+                <dx-button (onClick)="itemSelection(item)">Update</dx-button>
+              </div>
+            </div>
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event,'In Progress')">
+              <h2 id="title">In Progress</h2>
+              <div class="kanban-card" draggable="true" *ngFor="let item of filterTasks('In Progress')" (dragstart)="onDragStart(item)">
+                <p>Id: {{item.taskId}}</p>
+                <p>Description: {{item.taskName}}</p>
+                <p>Completion Rate: {{item.completionRate}}</p>
+                <p>Status: {{item.status}}</p>
+                <dx-button (onClick)="itemSelection(item)">Update</dx-button>
+              </div>
+            </div>
+            <div class="kanban-column" (dragover)="onDragOver($event)" (drop)="onDrop($event,'Done')">
+              <h2 id="title">Done</h2>
+              <div class="kanban-card" [draggable]="isDragable" *ngFor="let item of filterTasks('Done')" (dragstart)="onDragStart(item)">
+                <p>Id: {{item.taskId}}</p>
+                <p>Description: {{item.taskName}}</p>
+                <p>Completion Rate: {{item.completionRate}}</p>
+                <p>Status: {{item.status}}</p>
+                <dx-button (onClick)="itemSelection(item)" [disabled]="isDisabled">Update</dx-button>
+              </div>
+            </div>
+          </div>
+    }
+}
+
+<dx-popup 
+id="updateScreen"
+[(visible)]="isPopupVisible"
+[hideOnOutsideClick]="true"
+[showTitle]="true"
+title="Task Update Screen"
+[height]="500"
+[width]="500"
+[resizeEnabled]="true"
+[dragEnabled]="true"
+position="center"
+(onHiding)="popupCloseCondition($event)"
+>
+
+<dx-text-box label="ID: " [(value)]="popupValue_taskId"></dx-text-box>
+<dx-text-box label="Description: " [(value)]="popupValue_taskName"></dx-text-box>
+<dx-number-box 
+label="Completion Rate: " 
+[min]="0" 
+[max]="1" 
+format="percent"
+[step]="0.1"
+[showSpinButtons]="true"
+[showClearButton]="true"
+(onValueChanged)="updateCompletionRate($event)"
+[(value)]="popupValue_completionRate"
+></dx-number-box>
+<dx-text-box label="Status: " [disabled]="true" [(value)]="popupValue_status"></dx-text-box>
+
+<div class="popup-buttons">
+  <dx-button>Save</dx-button>
+  <dx-button (onClick)="resetPopupValue($event)">Reset</dx-button>
+  <dx-button (onClick)="closePopupScreen()">Close</dx-button>
+</div>
+
+</dx-popup>

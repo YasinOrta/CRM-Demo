@@ -1,0 +1,51 @@
+#title {
+    font-size: 30px;
+  }
+  
+  .kanban-board {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    width: 80%;
+    max-width: 1200px;
+  }
+  
+  .kanban-column {
+    background-color: #ffffff;
+    border-radius: 4px;
+    width: 300px;
+    padding: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-right: 1rem;
+  }
+  
+  .kanban-column h2 {
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .kanban-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup-buttons {
+    position: absolute;
+    bottom: 20px; /* Adjust as needed */
+    right: 20px;  /* Adjust as needed */
+    display: flex;
+    gap: 10px;   /* Space between buttons */
+  }
+
+  .editBtn {
+    position: absolute;
+    display: flex;
+    right: 40px;
+    top: 210px;
+  }
